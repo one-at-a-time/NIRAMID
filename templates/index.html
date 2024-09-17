@@ -44,11 +44,25 @@
         (<a href="/users" target="_blank">list view</a> /
         <a href="/users_json" target="_blank">json view</a>)
     </p>
+    
+    <!-- Floating Notification -->
+    <div id="notification" class="notification"></div>
+
     <script>
+        // Function to show the notification
+        function showNotification(message) {
+            var notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(function() {
+                notification.classList.remove('show');
+            }, 2000); // Notification disappears after 2 seconds
+        }
+
         // Check if there's a message passed in the URL query parameters
         var message = "{{ message | safe }}";
         if (message && message !== "None") {
-            alert(message);  // Display the confirmation message in a pop-up
+            showNotification(message);  // Display the notification
         }
     </script>
 </body>

@@ -1,3 +1,5 @@
+/* Existing styles */
+
 /* Style the body */
 body {
     font-family: Arial, sans-serif;
@@ -50,6 +52,7 @@ code {
     width: 300px; /* Set a specific width */
 }
 
+/* Positioning of the circular border effect */
 .border-box::before,
 .border-box::after {
     content: '';
@@ -72,11 +75,22 @@ code {
     right: -20px;
 }
 
-.text {
-    display: inline-block;
-    padding: 10px; /* Increased padding for better fit */
-    color: #003d5b; /* Caspian blue text color */
-    font-size: 36px; /* Large font size like a heading */
-    font-weight: bold; /* Make text bold */
-    margin: 0; /* Remove default margin */
+/* Styles for floating notification */
+.notification {
+    position: fixed;
+    top: 20px; /* Adjusted top position to overlap with the title box */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50; /* Green background for notification */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.5s ease;
+    z-index: 1000; /* Ensure it is above other content */
+}
+
+.notification.show {
+    opacity: 1; /* Visible */
 }
