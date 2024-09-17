@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App</title>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="border-box">
+        <h1>P-I-R-A-M-I-D</h1>
+    </div>
+
+    <p>Add a user by entering the username below:</p>
+    <form action="/add_user" method="POST">
+        <input type="text" name="username" placeholder="Enter username" required>
+        <button type="submit">Add User</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <p>Remove a user by entering the username below:</p>
+    <form action="/remove_user" method="POST">
+        <input type="text" name="username" placeholder="Enter username to remove" required>
+        <button type="submit">Remove User</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <p>Edit a username by entering the current and new username below:</p>
+    <form action="/modify_user" method="POST">
+        <input type="text" name="current_username" placeholder="Current username" required>
+        <input type="text" name="new_username" placeholder="New username" required>
+        <button type="submit">Modify Username</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <p>
+        Enrolled Users:
+        (<a href="/users" target="_blank">list view</a> /
+        <a href="/users_json" target="_blank">json view</a>)
+    </p>
+    <script>
+        // Check if there's a message passed in the URL query parameters
+        var message = "{{ message | safe }}";
+        if (message && message !== "None") {
+            alert(message);  // Display the confirmation message in a pop-up
+        }
+    </script>
+</body>
+
+</html>
