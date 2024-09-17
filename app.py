@@ -17,8 +17,8 @@ class User(db.Model):
 # Route for the home page
 @app.route('/')
 def home():
-    message = request.args.get('message')  # Don't pass an empty string by default
-    return render_template('index.html', message=message)
+    msg = request.args.get('message')  # Don't pass an empty string by default
+    return render_template('index.html', message=msg)
 
 # Route to add a user (POST request)
 @app.route('/add_user', methods=['POST'])
@@ -49,12 +49,14 @@ def modify_user():
     current_username = request.form['current_username']
     new_username = request.form['new_username']
     user = User.query.filter_by(username=current_username).first()
+    msg = ""
     if user:
         user.username = new_username
         db.session.commit()
-        return redirect(url_for('home', message=f"User {current_username} updated to {new_username} successfully!"))
+        msg = f"User '{current_username}' updated to '{new_username}' successfully!"
     else:
-        return redirect(url_for('home', message=f"User {current_username} not found!"))
+        msg = f"User '{current_username}' not found!"
+    return redirect(url_for('home', message=msg))
 
 # Route to list all users
 @app.route('/users')
