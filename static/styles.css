@@ -94,3 +94,35 @@ code {
 .notification.show {
     opacity: 1; /* Visible */
 }
+
+/* New styles for horizontal form alignment */
+
+/* Target the forms specifically */
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Add space between input and button */
+    margin-bottom: 30px; /* Space between form elements */
+}
+
+/* Style the inputs to be aligned beside the buttons */
+input[type="text"] {
+    padding: 5px;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+/* Style the buttons */
+button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ffa000; /* Match your theme color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button.danger-button {
+    background-color: red; /* Danger button styling */
+}
