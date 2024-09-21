@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError  # Correct module for IntegrityError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -24,10 +25,14 @@ def home():
 @app.route('/add_user', methods=['POST'])
 def add_user():
     username = request.form['username']
-    user = User(username=username)
-    db.session.add(user)
-    db.session.commit()
-    return redirect(url_for('home', message=f"User '{username}' added successfully!"))
+    try:
+        user = User(username=username)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('home', message=f"User '{username}' added successfully!"))
+    except IntegrityError:
+        db.session.rollback()
+        return redirect(url_for('home', message=f"User '{username}' already exists!"))
 
 # Route to delete a user (POST request)
 @app.route('/remove_user', methods=['POST'])
