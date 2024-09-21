@@ -1,3 +1,5 @@
+import re
+
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError  # Correct module for IntegrityError
@@ -14,6 +16,12 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+    
+    @staticmethod
+    def is_valid_username(username):
+        # Regex pattern for the username constraints
+        pattern = r'^[a-z0-9_]{3,20}$'
+        return re.match(pattern, username) is not None
 
 # Route for the home page
 @app.route('/')
@@ -25,6 +33,10 @@ def home():
 @app.route('/add_user', methods=['POST'])
 def add_user():
     username = request.form['username']
+    
+    if not User.is_valid_username(username):
+        return redirect(url_for('home', message="Invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
+
     try:
         user = User(username=username)
         db.session.add(user)
