@@ -75,6 +75,21 @@ def list_users_json():
     users = User.query.all()
     return jsonify([{'username': user.username} for user in users])
 
+# Route to remove all users
+@app.route('/remove_all_users', methods=['POST'])
+def remove_all_users():
+    try:
+        # Delete all users
+        db.session.query(User).delete() # user is the table name here
+        db.session.commit()
+        msg = "All users removed successfully!"
+    except Exception as e:
+        db.session.rollback()
+        msg = f"Error: {str(e)}"
+    
+    return redirect(url_for('home', message=msg))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 

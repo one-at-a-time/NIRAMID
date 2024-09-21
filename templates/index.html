@@ -39,6 +39,11 @@
     <br>
     <br>
     <br>
+    <p><strong>Danger Zone</strong>: Remove all users from the database!</p>
+    <form action="{{ url_for('remove_all_users') }}" method="POST" onsubmit="return confirm('Are you sure you want to remove all users? This action cannot be undone!');">
+        <button type="submit" style="background-color:red;color:white;">Remove All Users</button>
+    </form>
+    <br><br><br>
     <p>
         Enrolled Users:
         (<a href="/users" target="_blank">list view</a> /
