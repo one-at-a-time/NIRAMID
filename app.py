@@ -35,7 +35,7 @@ def add_user():
     username = request.form['username']
     
     if not User.is_valid_username(username):
-        return redirect(url_for('home', message="Invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
+        return redirect(url_for('home', message=f"'{username}' is an invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
 
     try:
         user = User(username=username)
@@ -65,6 +65,10 @@ def delete_user():
 def modify_user():
     current_username = request.form['current_username']
     new_username = request.form['new_username']
+    
+    if not User.is_valid_username(new_username):
+        return redirect(url_for('home', message=f"'{new_username}' is an invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
+    
     user = User.query.filter_by(username=current_username).first()
     msg = ""
     if user:
