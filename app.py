@@ -35,7 +35,7 @@ def add_user():
     username = request.form['username']
     
     if not User.is_valid_username(username):
-        return redirect(url_for('home', message="Invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
+        return redirect(url_for('home', message=f"'{username}' is an invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
 
     try:
         user = User(username=username)
