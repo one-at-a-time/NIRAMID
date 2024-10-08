@@ -111,6 +111,7 @@ input[type="text"] {
     padding: 5px;
     width: 200px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 /* Style the buttons */
@@ -125,4 +126,43 @@ button {
 
 button.danger-button {
     background-color: red; /* Danger button styling */
+}
+
+/* Info button styles */
+.info-btn {
+    display: inline-block;
+    margin-left: 1px;
+    background-color: #cbc9c5;
+    color: rgb(18, 1, 1);
+    font-weight: normal;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+}
+
+.info-btn:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 2em; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #7f7b7b;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.info-btn::after {
+    content: '';
+    opacity: 0;
+    transition: opacity 0.3s;
 }
