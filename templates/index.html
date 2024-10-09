@@ -14,41 +14,65 @@
         <h1>N-I-R-A-M-I-D</h1>
     </div>
 
-    <p>Add a user by entering the username below:</p>
+    <!-- <p>Add a user by entering the username below:</p> -->
     <form action="/add_user" method="POST">
-        <input type="text" name="username" placeholder="Enter username" required>
+        <input type="text" name="username" placeholder="Enter a valid username" required>
         <button type="submit">Add User</button>
+        <!-- Info button for username -->
+        <span class="info-btn" data-tooltip="Username must be 3-20 characters long and can only contain lowercase letters, numbers, and underscores.">i</span>
     </form>
+
     <br>
-    <br>
-    <br>
-    <p>Remove a user by entering the username below:</p>
+
+    <!-- <p>Remove a user by entering the username below:</p> -->
     <form action="/remove_user" method="POST">
         <input type="text" name="username" placeholder="Enter username to remove" required>
         <button type="submit">Remove User</button>
     </form>
+
     <br>
-    <br>
-    <br>
-    <p>Edit a username by entering the current and new username below:</p>
+  
+    <!-- <p>Edit a username by entering the current and new username below:</p> -->
     <form action="/modify_user" method="POST">
         <input type="text" name="current_username" placeholder="Current username" required>
         <input type="text" name="new_username" placeholder="New username" required>
         <button type="submit">Modify Username</button>
+        <span class="info-btn" data-tooltip="New username must be 3-20 characters long and can only contain lowercase letters, numbers, and underscores.">i</span>
     </form>
+
     <br>
+   
+    <!-- <p><strong>Danger Zone</strong>: Remove all users from the database!</p> -->
+    <form action="{{ url_for('remove_all_users') }}" method="POST" onsubmit="return confirm('Are you sure you want to remove all users? This action cannot be undone!');">
+        <button type="submit" class="danger-button">Remove All Users</button>
+    </form>
+
     <br>
-    <br>
+
     <p>
         Enrolled Users:
         (<a href="/users" target="_blank">list view</a> /
         <a href="/users_json" target="_blank">json view</a>)
     </p>
+    
+    <!-- Floating Notification -->
+    <div id="notification" class="notification"></div>
+
     <script>
+        // Function to show the notification
+        function showNotification(message) {
+            var notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(function() {
+                notification.classList.remove('show');
+            }, 2000); // Notification disappears after 2 seconds
+        }
+
         // Check if there's a message passed in the URL query parameters
         var message = "{{ message | safe }}";
         if (message && message !== "None") {
-            alert(message);  // Display the confirmation message in a pop-up
+            showNotification(message);  // Display the notification
         }
     </script>
 </body>

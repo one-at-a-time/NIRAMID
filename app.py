@@ -1,5 +1,8 @@
+import re
+
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError  # Correct module for IntegrityError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -13,6 +16,12 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+    
+    @staticmethod
+    def is_valid_username(username):
+        # Regex pattern for the username constraints
+        pattern = r'^[a-z0-9_]{3,20}$'
+        return re.match(pattern, username) is not None
 
 # Route for the home page
 @app.route('/')
@@ -24,10 +33,18 @@ def home():
 @app.route('/add_user', methods=['POST'])
 def add_user():
     username = request.form['username']
-    user = User(username=username)
-    db.session.add(user)
-    db.session.commit()
-    return redirect(url_for('home', message=f"User '{username}' added successfully!"))
+    
+    if not User.is_valid_username(username):
+        return redirect(url_for('home', message=f"'{username}' is an invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
+
+    try:
+        user = User(username=username)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('home', message=f"User '{username}' added successfully!"))
+    except IntegrityError:
+        db.session.rollback()
+        return redirect(url_for('home', message=f"User '{username}' already exists!"))
 
 # Route to delete a user (POST request)
 @app.route('/remove_user', methods=['POST'])
@@ -48,6 +65,10 @@ def delete_user():
 def modify_user():
     current_username = request.form['current_username']
     new_username = request.form['new_username']
+    
+    if not User.is_valid_username(new_username):
+        return redirect(url_for('home', message=f"'{new_username}' is an invalid username! Must be 3-20 characters long and can have only lowercase letters, numbers or '_'."))
+    
     user = User.query.filter_by(username=current_username).first()
     msg = ""
     if user:
@@ -69,6 +90,21 @@ def list_users():
 def list_users_json():
     users = User.query.all()
     return jsonify([{'username': user.username} for user in users])
+
+# Route to remove all users
+@app.route('/remove_all_users', methods=['POST'])
+def remove_all_users():
+    try:
+        # Delete all users
+        db.session.query(User).delete() # user is the table name here
+        db.session.commit()
+        msg = "All users removed successfully!"
+    except Exception as e:
+        db.session.rollback()
+        msg = f"Error: {str(e)}"
+    
+    return redirect(url_for('home', message=msg))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,3 +1,5 @@
+/* Existing styles */
+
 /* Style the body */
 body {
     font-family: Arial, sans-serif;
@@ -50,6 +52,7 @@ code {
     width: 300px; /* Set a specific width */
 }
 
+/* Positioning of the circular border effect */
 .border-box::before,
 .border-box::after {
     content: '';
@@ -72,11 +75,94 @@ code {
     right: -20px;
 }
 
-.text {
+/* Styles for floating notification */
+.notification {
+    position: fixed;
+    top: 20px; /* Adjusted top position to overlap with the title box */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50; /* Green background for notification */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.5s ease;
+    z-index: 1000; /* Ensure it is above other content */
+}
+
+.notification.show {
+    opacity: 1; /* Visible */
+}
+
+/* New styles for horizontal form alignment */
+
+/* Target the forms specifically */
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Add space between input and button */
+    margin-bottom: 30px; /* Space between form elements */
+}
+
+/* Style the inputs to be aligned beside the buttons */
+input[type="text"] {
+    padding: 5px;
+    width: 200px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Style the buttons */
+button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #ffa000; /* Match your theme color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button.danger-button {
+    background-color: red; /* Danger button styling */
+}
+
+/* Info button styles */
+.info-btn {
     display: inline-block;
-    padding: 10px; /* Increased padding for better fit */
-    color: #003d5b; /* Caspian blue text color */
-    font-size: 36px; /* Large font size like a heading */
-    font-weight: bold; /* Make text bold */
-    margin: 0; /* Remove default margin */
+    margin-left: 1px;
+    background-color: #cbc9c5;
+    color: rgb(18, 1, 1);
+    font-weight: normal;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+}
+
+.info-btn:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 2em; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #7f7b7b;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.info-btn::after {
+    content: '';
+    opacity: 0;
+    transition: opacity 0.3s;
 }
